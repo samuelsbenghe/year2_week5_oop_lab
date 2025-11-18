@@ -1,17 +1,19 @@
 // Runs unit tests on DynString class
 public class DynStringTest {
 
-	public static void test(boolean v, String msg){ Test.test(v, msg); }
+	public static void test(boolean v, String msg) {
+		Test.test(v, msg);
+	}
 
 	public static void main(String[] args) {
-		{	// Check fields: only one char[]
+		{ // Check fields: only one char[]
 			var fields = DynString.class.getDeclaredFields();
 			test(fields.length == 1, "more than one field");
 			test(fields[0].getType().getCanonicalName().equals("char[]"), "field is not char[]");
 			// Must not remove existing resizeData() method (should be used internally)
 			var hasResizeDataMethod = false;
-			for(var m : DynString.class.getDeclaredMethods()){
-				if(m.getName() == "resizeData"){
+			for (var m : DynString.class.getDeclaredMethods()) {
+				if (m.getName() == "resizeData") {
 					hasResizeDataMethod = true;
 					break;
 				}
@@ -19,7 +21,7 @@ public class DynStringTest {
 			test(hasResizeDataMethod, "missing resizeData() method");
 		}
 
-		//* Move this toggle comment down as you implement new features
+		// * Move this toggle comment down as you implement new features
 
 		{ // Default ctor
 			var s = new DynString();
@@ -27,7 +29,7 @@ public class DynStringTest {
 		}
 
 		{ // char[] ctor and get/set
-			char[] charArray = {'x', 'y', 'z'};
+			char[] charArray = { 'x', 'y', 'z' };
 			var s = new DynString(charArray);
 			test(s.size() == 3, "char[] ctor: wrong size");
 			test(s.get(0) == 'x', "get(0) wrong value");
@@ -58,7 +60,7 @@ public class DynStringTest {
 		{ // Fill ctor
 			var s = new DynString(3, 'o');
 			test(s.size() == 3, "fill ctor: wrong size");
-			for(int i=0; i<s.size(); ++i)
+			for (int i = 0; i < s.size(); ++i)
 				test(s.get(i) == 'o', "fill ctor: wrong value");
 		}
 
@@ -80,8 +82,8 @@ public class DynStringTest {
 
 			s.resize(4);
 			test(s.size() == 4, "resize up: wrong size");
-			test(s.get(0) == 'a',  "resize up: wrong value at index 0");
-			test(s.get(1) == 'b',  "resize up: wrong value at index 1");
+			test(s.get(0) == 'a', "resize up: wrong value at index 0");
+			test(s.get(1) == 'b', "resize up: wrong value at index 1");
 			test(s.get(2) == '\0', "resize up: wrong value at index 2");
 			test(s.get(3) == '\0', "resize up: wrong value at index 3");
 
@@ -91,17 +93,17 @@ public class DynStringTest {
 
 		{ // equals
 			var s = new DynString(4, 'o');
-			test( s.equals(new char[]{'o','o','o','o'}), "equals: char[]");
-			test( s.equals(new DynString("oooo")), "equals: DynString");
-			test( s.equals( "oooo"), "equals: String");
-			test(!s.equals(  "ooo"), "equals: String");
+			test(s.equals(new char[] { 'o', 'o', 'o', 'o' }), "equals: char[]");
+			test(s.equals(new DynString("oooo")), "equals: DynString");
+			test(s.equals("oooo"), "equals: String");
+			test(!s.equals("ooo"), "equals: String");
 			test(!s.equals("ooooo"), "equals: String");
 		}
 
 		{ // substr
 			var s = new DynString("steal");
-			test(s.substr(1,4).equals("tea"), "substr(int,int): wrong result");
-			test(s.substr(0,2).equals(new DynString("st")), "substr(int,int): wrong result");
+			test(s.substr(1, 4).equals("tea"), "substr(int,int): wrong result");
+			test(s.substr(0, 2).equals(new DynString("st")), "substr(int,int): wrong result");
 			test(s.substr(1).equals("teal"), "substr(int): wrong result");
 			test(s.substr(2).equals("eal"), "substr(int): wrong result");
 		}
@@ -112,6 +114,6 @@ public class DynStringTest {
 			var c = a.concat(" ").concat(b).concat("!");
 			test(c.equals("Hello World!"), "concat: wrong result");
 		}
-		//*/
+		// */
 	}
 }
